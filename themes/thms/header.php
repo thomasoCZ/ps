@@ -54,106 +54,24 @@
         </header><!-- #masthead -->
 
 
-
-
         <div class="underimage">
+            <?php $post_thumbnail_id = get_post_thumbnail_id(); ?>
 
+<div class="v-wrap top-image<?php if(is_single()) { ?> smallheight<?php } ?>" style="background-image: url(<?php echo wp_get_attachment_image_src( $post_thumbnail_id, 'full-width')[0];?>);">
 
+                <div class="h-v-element top-heading">
+                    <?php the_title( '<h1 class="steel">', '</h1>' ); ?>
+                    <?php if( get_field('subtitle') ): ?>
+                        <span class="understeel">
+                            <?php the_field('subtitle'); ?>
+                        </span>
 
-
-
-            <?php
-
-            $post_type=get_post_type();
-
-            if ($post_type == 'news') {
-
-                ?>
-
-
-                <?php $post_thumbnail_id = get_post_thumbnail_id(9); ?>
-
-                <div class="v-wrap top-image smallheight" data-stellar-background-ratio="0.4"
-                     data-stellar-vertical-offset="<?php the_field('background_offset', 9); ?>"
-                     style="background-image: url(<?php echo wp_get_attachment_image_src($post_thumbnail_id, 'full-width')[0]; ?>);">
-
-
-                    <div class="h-v-element top-heading">
-
-
-                        <h1 class="steel">
-
-
-                            <?php echo get_the_title(9); ?>
-
-
-                        </h1>
-
-                        <?php if (get_field('subtitle', 9)) : ?>
-                            <span class="understeel">
-                        <?php the_field('subtitle', 9); ?>
-                    </span>
-                        <?php endif; ?>
-
-                    </div>
+                    <?php endif; ?>
 
                 </div>
-
-
-
-            <?php  }
-            elseif(is_page() && !is_front_page()) { ?>
-
-                <?php $post_thumbnail_id = get_post_thumbnail_id(); ?>
-
-                <div class="v-wrap top-image" data-stellar-background-ratio="0.4" data-stellar-vertical-offset="<?php the_field('background_offset'); ?>" style="background-image: url(<?php echo wp_get_attachment_image_src( $post_thumbnail_id, 'full-width')[0];?>);">
-
-                    <div class="h-v-element top-heading">
-                        <?php the_title( '<h1 class="steel">', '</h1>' ); ?>
-                        <?php if( get_field('subtitle') ): ?>
-                            <span class="understeel">
-                        <?php the_field('subtitle'); ?>
-                    </span>
-
-                        <?php endif; ?>
-
-                    </div>
-                </div>
-
-            <?php  }
-
-            elseif(is_front_page()) { ?>
-
-                <div class="hp-slider">
-
-                    <?php
-                    echo do_shortcode("[metaslider id=1367]");
-                    ?>
-                </div>
-
-            <?php }
-
-            else { ?>
-
-
-                <?php $post_thumbnail_id = get_post_thumbnail_id(770); ?>
-
-                <div class="v-wrap top-image smallheight" data-stellar-background-ratio="0.4" data-stellar-vertical-offset="<?php the_field('background_offset',770); ?>" style="background-image: url(<?php echo wp_get_attachment_image_src( $post_thumbnail_id, 'full-width')[0];?>);">
-
-
-                </div>
-
-            <?php } ?>
-
-
-
-
-
-
+            </div>
 
             <div class="scrolldown"></div>
-
-
         </div>
 
 
@@ -161,9 +79,6 @@
 
 
         <div id="content" class="site-content">
-
-
-
 
             <div class="container">
 

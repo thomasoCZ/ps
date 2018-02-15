@@ -14,34 +14,23 @@ get_header(); ?>
 
 
 
-<div class="row">
-    <div class="col-md-8">
+
 
         <div id="primary" class="content-area">
             <main id="main" class="site-main" role="main">
-
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
 
                 <?php while ( have_posts() ) : the_post(); ?>
-
-
-                    <?php get_template_part( 'template-parts/content', 'page' ); ?>
-
-
-
-
+                        <?php the_content() ?>
 
                 <?php endwhile; // End of the loop. ?>
+
+            </div>
+            </div> 
 
             </main><!-- #main -->
         </div><!-- #primary -->
 
-    </div>
-
-    <div class="col-md-4">
-            <div class="clearfix"></div>
-            <?php get_sidebar(); ?>
-
-    </div>
-</div>
 
 <?php get_footer(); ?>

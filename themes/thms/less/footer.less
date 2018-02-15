@@ -1,17 +1,43 @@
 
 
 .site-footer {
-  min-height: 200px;
-  background: #222;
+  min-height: 240px;
+  background: #000;
   margin-top: 80px;
+ 
 
-  span {
-    color: #fff;
-    font-family: 'Bebas', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    letter-spacing: 2px;
-    line-height: 160%;
+  &:hover {
+    .signature {
+      opacity: 1;
+    }
+  }
+
+  .signature {
+    margin-top: 1rem;
+    opacity: 0.2;
+    .tr-slow-linear;
+
+    .signature__text {
+      color: #fff;
+      font-family: 'Bebas', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 4px;
+      margin-right: -4px;
+      line-height: 160%;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .signature__logo {
+      fill: #fff;
+      width: 11rem;
+      height: 4.6rem;
+
+      .tm-t, .tm-m {
+        display: none;
+      }
+    }
 
   }
 
@@ -25,9 +51,4 @@
 
 .home .site-footer {
   margin-top: 0;
-}
-
-.signature {
-  background: url(./images/signature.png);
-
 }

@@ -1,8 +1,6 @@
 
 
 .home .top-image {
-  height: 100vh;
-  min-height: 500px;
 
   .top-heading {
     display: none;
@@ -17,33 +15,33 @@
   position: relative;
   background: #000;
   padding-top: 75px;
+  
 
   @media (min-width: @screen-sm-min) {
     padding-top: 0;
   }
 }
 
-.hp-slider {
-  .ms-image > img {
-    //opacity: 0.6;
-  }
-}
-
-
-
-
 
 .top-image {
-  height: 500px;
+  min-height: 600px;
+  height: 75vh;
+  max-height: 100vh;
   background-repeat: no-repeat !important;
-  background-position-x: center !important;
+  background-position: center center;
   background-color: #000;
-  .background-size(cover);
+  background-size: cover;
   background-attachment: fixed;
   position: relative;
+  transform-origin: 50%;
 
   &.smallheight {
-    height: 500px;
+   min-height: 400px;
+   height: 400px;
+
+   .top-heading .steel {
+     display: none;
+   }
   }
 
   @media (max-width: @screen-xs-max) {
@@ -58,11 +56,11 @@
 
     .steel {
       color: #fff;
-      font-size: 81px;
-      line-height: 81px;
+      font-size: 50px;
+      line-height: 56px;
       @media (min-width: @screen-sm-min) {
-        font-size: 120px;
-        line-height: 120px;
+        font-size: 86px;
+        line-height: 86px;
       }
       @media (min-width: @screen-md-min) {
         white-space: nowrap;

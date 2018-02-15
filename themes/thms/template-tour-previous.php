@@ -25,7 +25,7 @@ get_header(); ?>
 
             <div class="tour-nav">
 
-                <a href="<?php echo get_permalink(12); ?>"><?php _e('[:cs]Nadcházející[:en]Upcoming'); ?></a>
+                <a href="<?php echo get_permalink(56); ?>"><?php _e('[:cs]Nadcházející[:en]Upcoming'); ?></a>
                 <span class="current"><?php _e('[:cs]Odehrané[:en]Previous'); ?></span>
 
 

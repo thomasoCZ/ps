@@ -70,7 +70,7 @@ get_header(); ?>
 
                         </div>
                     </div>
-                    <a href="<?php echo get_the_permalink(9); ?>" class="button"><?php _e('[:cs]Všechny novinky [:en]View all news'); ?></a>
+                    <a href="<?php echo get_the_permalink(66); ?>" class="button"><?php _e('[:cs]Všechny novinky [:en]More news'); ?></a>
                 </div>
             </section>
 
@@ -78,8 +78,8 @@ get_header(); ?>
             <section class="events dark">
                 <div class="container">
 
-                    <h2 class="steel"><?php _e('[:cs]Nadcházející koncerty [:en]Upcoming events'); ?></h2>
-                    <h4 class="understeel"><?php _e('[:cs]Electric lady živě [:en]Electric lady live'); ?></h4>
+                    <h2 class="steel"><?php _e('[:cs]Nadcházející akce [:en]Upcoming events'); ?></h2>
+                    <h4 class="understeel"><?php _e('[:cs]Pearly Seconds Live [:en]Pearly Seconds Live'); ?></h4>
 
                     <div class="hp-events">
                         <?php
@@ -124,7 +124,7 @@ get_header(); ?>
 
                     </div>
 
-                    <a href="<?php echo get_the_permalink(12); ?>" class="button"><?php _e('[:cs]Všechny koncerty[:en]View all events'); ?></a>
+                    <a href="<?php echo get_the_permalink(56); ?>" class="button"><?php _e('[:cs]Všechny koncerty[:en]View all events'); ?></a>
 
                 </div>
 
@@ -169,36 +169,36 @@ get_header(); ?>
             <section class="hp-blocks dark">
 
 
-                <a href="<?php echo get_permalink(101); ?>">
-                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(101), 'news-thumbnail' )[0]; ?>);">
+                <a href="<?php echo get_permalink(82); ?>">
+                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(82), 'news-thumbnail' )[0]; ?>);">
 
-                        <span class="steel h-v-element"><?php echo get_the_title(101); ?></span>
-
-                    </div>
-                </a>
-
-
-                <a href="<?php echo get_permalink(18); ?>">
-                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(18), 'news-thumbnail' )[0]; ?>);">
-
-                        <span class="steel h-v-element"><?php echo get_the_title(18); ?></span>
-
-                    </div>
-                </a>
-
-                <a href="<?php echo get_permalink(16); ?>">
-                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(16), 'news-thumbnail' )[0]; ?>);">
-
-                        <span class="steel h-v-element"><?php echo get_the_title(16); ?></span>
+                        <span class="steel h-v-element"><?php echo get_the_title(82); ?></span>
 
                     </div>
                 </a>
 
 
-                <a href="<?php echo get_permalink(20); ?>">
-                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(20), 'news-thumbnail' )[0]; ?>);">
+                <a href="<?php echo get_permalink(56); ?>">
+                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(56), 'news-thumbnail' )[0]; ?>);">
 
-                        <span class="steel h-v-element"><?php echo get_the_title(20); ?></span>
+                        <span class="steel h-v-element"><?php echo get_the_title(56); ?></span>
+
+                    </div>
+                </a>
+
+                <a href="<?php echo get_permalink(71); ?>">
+                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(71), 'news-thumbnail' )[0]; ?>);">
+
+                        <span class="steel h-v-element"><?php echo get_the_title(71); ?></span>
+
+                    </div>
+                </a>
+
+
+                <a href="<?php echo get_permalink(69); ?>">
+                    <div class="fifty v-wrap" style="background-image: url(<?php echo wp_get_attachment_image_src( get_post_thumbnail_id(69), 'news-thumbnail' )[0]; ?>);">
+
+                        <span class="steel h-v-element"><?php echo get_the_title(69); ?></span>
 
                     </div>
                 </a>

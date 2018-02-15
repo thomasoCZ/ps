@@ -69,8 +69,8 @@ jQuery(document).ready(function ($) {
         var para = $(document).scrollTop();
 
         $image.css('opacity', NavScroll);
-       // $image.css('transform','translateY(-'+ $(document).scrollTop()/0.5 +'px)');
-        //$image.css('transform','scale('+ (1 + (NavScroll)) +')');
+        //$image.css('transform','translateY(-'+ $(document).scrollTop()/0.5 +'px)');
+       // $image.css('transform','scale('+ (1 - (NavScroll/5)) +')');
         // $('.big-top').css('opacity',NavScroll);
 
 
@@ -80,6 +80,7 @@ jQuery(document).ready(function ($) {
         //$('.top-image').css('opacity',NavScroll);
 
     }
+
 
 
     $(window).scroll(function (e) {

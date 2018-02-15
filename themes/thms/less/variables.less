@@ -2,11 +2,15 @@
 @light-grey: #e9e9e9;
 
 .tr-slow(@what: all) {
-  .transition(@what 0.4s);
+  .transition(@what 0.4s cubic-bezier(0.51, 0.05, 0, 0.96));
 }
 
-.tr-fast {
-  .transition(all 0.1s ease-in-out);
+.tr-slow-linear(@what: all) {
+  .transition(@what 0.4s linear);
+}
+
+.tr-fast(@what: all) {
+  .transition(@what 0.2s cubic-bezier(0.51, 0.05, 0, 0.96));
 }
 
 .reset {

@@ -29,7 +29,7 @@ get_header(); ?>
                     $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
                     $args = array(
-                        'post_type' => 'news',
+                        'post_type' => 'post',
                         'orderby' => 'date',
                         'order'   => 'DSC',
                         'post_status' => 'publish',
