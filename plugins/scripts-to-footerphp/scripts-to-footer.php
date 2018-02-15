@@ -11,7 +11,7 @@
  * Plugin Name: Scripts-To-Footer
  * Plugin URI: http://wordpress.org/plugins/scripts-to-footerphp/
  * Description: Moves scripts to the footer to decrease page load times, while keeping stylesheets in the header. Requires that plugins and theme correctly utilizes wp_enqueue_scripts hook. Can be disabled via a checkbox on specific pages and posts.
- * Version: 0.6.1
+ * Version: 0.6.2
  * Author: Joshua David Nelson
  * Author URI: http://joshuadnelson.com
  * License: GPL2
@@ -44,7 +44,7 @@ if( !defined( 'STF_DOMAIN' ) )
 
 // Plugin Verison
 if( !defined( 'STF_VERSION' ) )
-	define( 'STF_VERSION', '0.6.1' );
+	define( 'STF_VERSION', '0.6.2' );
 
 // Plugin name
 if( !defined( 'STF_NAME' ) )
@@ -349,7 +349,11 @@ class Scripts_To_Footer {
 		// Search Result Page
 		} elseif( is_search() ) {
 			$type = 'search';
-		
+
+		// 404 Pages
+		} elseif( is_404() ) {
+			$type = '404';
+
 		// Author Archive
 		} elseif( is_author() ) {
 			$type = 'author_archive';
@@ -537,7 +541,7 @@ if( !function_exists( 'stf_plugin_links' ) ) {
 			
 			$links[] = '<a href="https://github.com/joshuadavidnelson/scripts-to-footer/wiki" title="' . __( 'Documentation', STF_DOMAIN ) . '" target="_blank">' . __( 'Documentation', STF_DOMAIN ) . '</a>';
 	
-			$links[] = '<a href="http://jdn.im/donate" title="' . __( 'Donate', STF_DOMAIN ) . '">' . __( 'Donate', STF_DOMAIN ) . '</a>';
+			$links[] = '<a href="https://joshuadnelson.com/donate" title="' . __( 'Donate', STF_DOMAIN ) . '">' . __( 'Donate', STF_DOMAIN ) . '</a>';
 		}
 		
 		return $links;

@@ -1,57 +1,40 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * CPAC_Column_Post_Sticky
- *
  * @since 2.0
  */
-class CPAC_Column_Post_Sticky extends CPAC_Column {
+class AC_Column_Post_Sticky extends AC_Column {
 
-	/**
-	 * @see CPAC_Column::init()
-	 * @since 2.2.1
-	 */
-	public function init() {
+	private $stickies = null;
 
-		parent::init();
-
-		// Properties
-		$this->properties['type']	 	= 'column-sticky';
-		$this->properties['label']	 	= __( 'Sticky', 'codepress-admin-columns' );
+	public function __construct() {
+		$this->set_type( 'column-sticky' );
+		$this->set_label( __( 'Sticky', 'codepress-admin-columns' ) );
 	}
 
-	/**
-	 * @see CPAC_Column::apply_conditional()
-	 * @since 2.0
-	 */
-	function apply_conditional() {
-
-		if ( 'post' == $this->storage_model->key )
-			return true;
-
-		return false;
+	function is_valid() {
+		return 'post' == $this->get_post_type();
 	}
 
-	/**
-	 * @see CPAC_Column::get_value()
-	 * @since 2.0
-	 */
 	function get_value( $post_id ) {
+		return ac_helper()->icon->yes_or_no( $this->is_sticky( $post_id ) );
+	}
 
-		$value = $this->get_asset_image( 'no.png' );
+	function get_raw_value( $post_id ) {
+		return $this->is_sticky( $post_id );
+	}
 
-		if ( $this->get_raw_value( $post_id ) ) {
-			$value = $this->get_asset_image( 'checkmark.png' );
+	// Helpers
+	private function is_sticky( $post_id ) {
+		if ( null === $this->stickies ) {
+			$this->stickies = get_option( 'sticky_posts' );
 		}
 
-		return $value;
+		return in_array( $post_id, (array) $this->stickies );
 	}
 
-	/**
-	 * @see CPAC_Column::get_raw_value()
-	 * @since 2.0.3
-	 */
-	function get_raw_value( $post_id ) {
-
-		return is_sticky( $post_id );
-	}
 }

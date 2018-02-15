@@ -45,15 +45,18 @@
 
 .a3-metabox-panel-wrap {
     background: #fff;
-    padding-left: 153px;
+    padding-left: 146px;
+    box-sizing: border-box;
 }
 .a3-metabox-wrapper, .a3-metabox-options-panel {
     float: right;
     width: 100%;
 }
-.a3-metabox-wrapper .a3-metabox-items, .a3-metabox-wrapper p.toolbar, .a3-metabox-options-panel .a3-metabox-items, .a3-metabox-options-panel p.toolbar {
-    padding-left: 12px!important;
-    padding-right: 20px!important;
+.a3-metabox-wrapper p.toolbar,
+.a3-metabox-options-panel .a3-metabox-items,
+.a3-metabox-options-panel p.toolbar {
+    padding-left: 15px!important;
+    padding-right: 15px!important;
 }
 .a3-metabox-tabs-back {
     position: absolute;
@@ -69,7 +72,7 @@ ul.a3-metabox-data-tabs {
     line-height: 1em;
     float: left;
     width: 145px;
-    margin: 0 0 0 -153px;
+    margin: 0 0 0 -146px;
     position: relative;
     padding: 0 0 10px;
 }
@@ -110,19 +113,22 @@ ul.a3-metabox-data-tabs li.active a {
 .a3-metabox-panel table.form-table td *,
 .a3-metabox-panel table.form-table td,
 .a3-metabox-panel * {
-    font-size: 12px;
+    font-size: 13px;
+}
+.a3-metabox-panel table td {
+    padding: 10px 15px;
 }
 
 .a3-metabox-wrapper .toolbar {
     margin: 0!important;
     border-top: 1px solid #fff;
     border-bottom: 1px solid #DFDFDF;
-    padding: 9px 12px!important;
+    padding: 9px 15px!important;
 }
 .a3-metabox-wrapper .toolbar:first-child {
     border-top: 0
 }
-.a3-metabox-wrapper .toolbar: last-child {
+.a3-metabox-wrapper .toolbar:last-child {
     border-bottom: 0
 }
 .a3-metabox-wrapper p.toolbar {
@@ -131,45 +137,39 @@ ul.a3-metabox-data-tabs li.active a {
 }
 .a3-metabox-wrapper .a3-metabox-items {
     border-bottom: 1px solid #DFDFDF;
-    padding: 0 12px;
 }
 .a3-metabox-wrapper .a3-metabox-item-sortable-placeholder {
     border-color: #bbb;
     background-color: #f5f5f5;
     margin-bottom: 9px;
     border-width: 1px;
-    border-style: dashed
+    border-style: dashed;
 }
 .a3-metabox-wrapper .a3-metabox-item {
     background: #fff;
-    border: 1px solid #dfdfdf;
-    margin: 9px 0!important;
-    -moz-border-radius-topleft: 3px;
-    -moz-border-radius-topright: 3px;
-    -webkit-border-top-left-radius: 3px;
-    -webkit-border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px
+    border-bottom: 1px solid #DFDFDF;
+    margin: 0!important;
+}
+.a3-metabox-wrapper .a3-metabox-item:last-of-type {
+    border-bottom: 0 none;
 }
 .a3-metabox-wrapper .a3-metabox-item .handlediv:before {
-    line-height: .5!important;
-}
-.a3-metabox-wrapper .a3-metabox-item.closed {
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    line-height: 1!important;
 }
 .a3-metabox-wrapper .a3-metabox-item.closed h3 {
     border: 0;
 }
 .a3-metabox-wrapper .a3-metabox-item h3 {
     margin: 0!important;
-    padding: 6px 6px 6px 0 !important;
+    padding: 10px 15px !important;
     font-size: 1em!important;
     overflow: hidden;
     zoom: 1;
-    cursor: pointer;
+    cursor: move;
     position: relative;
+}
+.a3-metabox-wrapper .a3-metabox-item h3 span {
+    font-weight: 400;
 }
 .a3-metabox-wrapper .a3-metabox-item.open h3 {
     cursor: ne-resize;
@@ -181,12 +181,12 @@ ul.a3-metabox-data-tabs li.active a {
     float: right;
 }
 .a3-metabox-wrapper .a3-metabox-item h3 strong {
-    font-weight: 400;
-    line-height: 24px;
+    line-height: 1;
 }
 .a3-metabox-wrapper .a3-metabox-item h3 .handlediv {
     background-position: 6px 5px!important;
     height: 24px;
+    width: 24px;
     position: absolute;
     z-index: 1000;
     right: 0;
@@ -208,16 +208,18 @@ ul.a3-metabox-data-tabs li.active a {
     margin: 0;
 }
 .a3-metabox-wrapper .a3-metabox-item h3 table td:first-child {
-    width: 25%;
+    width: 27%;
 }
 .a3-metabox-panel table tr td:first-child {
-    width: 25%;
+    width: 27%;
 }
 .a3-metabox-wrapper .a3-metabox-item table td {
     text-align: left;
-    padding: 6px;
     vertical-align: top;
     border: 0
+}
+.a3-metabox-wrapper .a3-metabox-item h3 table td {
+    padding: 0;
 }
 .a3-metabox-wrapper .a3-metabox-item table td label {
     text-align: left;

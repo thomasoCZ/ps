@@ -20,20 +20,20 @@ jQuery( function ( $ ) {
 		// If the user clicks on some form input inside the h3, like a select list (for variations), the box should not be toggled
 		if ($(event.target).filter(':input, option').length) return;
 		$( this ).parent( '.a3-metabox-item' ).toggleClass( 'closed' ).toggleClass( 'open' );
-		$(this).next('.a3-metabox-item-content').toggle();
+		$(this).next('.a3-metabox-item-content').slideToggle();
 	})
 	.on('click', '.expand_all', function(event){
 		$(this).closest('.a3-metabox-wrapper').find('.a3-metabox-item').removeClass( 'closed' ).addClass( 'open' );
-		$(this).closest('.a3-metabox-wrapper').find('.a3-metabox-item > table').show();
+		$(this).closest('.a3-metabox-wrapper').find('.a3-metabox-item-content').slideDown();
 		return false;
 	})
 	.on('click', '.close_all', function(event){
 		$(this).closest('.a3-metabox-wrapper').find('.a3-metabox-item').removeClass( 'open' ).addClass( 'closed' );
-		$(this).closest('.a3-metabox-wrapper').find('.a3-metabox-item > table').hide();
+		$(this).closest('.a3-metabox-wrapper').find('.a3-metabox-item-content').slideUp();
 		return false;
 	});
 	$('.a3-metabox-item.closed').each(function(){
-		$(this).find('.a3-metabox-item-content').hide();
+		$(this).find('.a3-metabox-item-content').slideUp();
 	});
 
 });

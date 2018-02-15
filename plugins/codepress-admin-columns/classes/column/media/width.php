@@ -1,37 +1,23 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * CPAC_Column_Media_Width
- *
  * @since 2.0
  */
-class CPAC_Column_Media_Width extends CPAC_Column {
+class AC_Column_Media_Width extends AC_Column_Media_Height {
 
-	/**
-	 * @see CPAC_Column::init()
-	 * @since 2.2.1
-	 */
-	public function init() {
+	public function __construct() {
+		parent::__construct();
 
-		parent::init();
-
-		// Properties
-		$this->properties['type']	 	= 'column-width';
-		$this->properties['label']	 	= __( 'Width', 'codepress-admin-columns' );
+		$this->set_type( 'column-width' );
+		$this->set_label( __( 'Width', 'codepress-admin-columns' ) );
 	}
 
-	/**
-	 * @see CPAC_Column::get_value()
-	 * @since 2.0
-	 */
-	function get_value( $id ) {
-
-		$value = '';
-
-		$meta = get_post_meta( $id, '_wp_attachment_metadata', true );
-
-		if( ! empty( $meta['width'] ) )
-			$value = $meta['width'];
-
-		return $value;
+	protected function get_option_name() {
+		return 'width';
 	}
+
 }

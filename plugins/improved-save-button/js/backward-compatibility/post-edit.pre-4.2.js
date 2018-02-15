@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Label Blanc (http://www.labelblanc.ca/)
+ * Copyright 2017 Label Blanc (http://www.labelblanc.ca/)
  *
  * This file is part of the "Improved Save Button"
  * Wordpress plugin.

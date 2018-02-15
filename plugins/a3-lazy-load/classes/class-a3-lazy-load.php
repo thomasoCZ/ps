@@ -2,6 +2,7 @@
 class A3_Lazy_Load
 {
 	const version = A3_LAZY_VERSION;
+	protected $iframe_placeholder_url;
 	protected $_placeholder_url;
 	protected $_skip_images_classes;
 	protected $_skip_videos_classes;
@@ -30,7 +31,7 @@ class A3_Lazy_Load
 		}
 
 		// Disable on Opera Mini
-		if ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false ) {
+		if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false ) {
 			return;
 		}
 
@@ -48,11 +49,12 @@ class A3_Lazy_Load
 
 		add_filter( 'a3_lazy_load_html', array( $this, 'filter_html' ), 10, 2 );
 
-		$this->_placeholder_url = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+		$this->iframe_placeholder_url = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+		$this->_placeholder_url = A3_LAZY_LOAD_IMAGES_URL . '/lazy_placeholder.gif';
 
 		// Apply for Images
 		$skip_images_classes = apply_filters( 'a3_lazy_load_skip_images_classes', $a3_lazy_load_global_settings['a3l_skip_image_with_class'] );
-		if ( strlen( trim( $skip_images_classes ) ) ) {
+		if ( '' != trim( $skip_images_classes ) ) {
 			$this->_skip_images_classes = array_map( 'trim', explode( ',', $skip_images_classes ) );
 		}
 		if ( is_array( $this->_skip_images_classes ) ) {
@@ -63,6 +65,8 @@ class A3_Lazy_Load
 
 		if ( $a3_lazy_load_global_settings['a3l_apply_to_images'] == true ) {
 			add_filter( 'a3_lazy_load_images', array( $this, 'filter_images' ), 10, 2 );
+
+			add_filter( 'wp_get_attachment_image_attributes', array( $this, 'get_attachment_image_attributes' ), 200 );
 
 			if ( $a3_lazy_load_global_settings['a3l_apply_image_to_content'] == true ) {
 				add_filter( 'the_content', array( $this, 'filter_content_images' ), 10 );
@@ -124,7 +128,10 @@ class A3_Lazy_Load
 
 		do_action('before_a3_lazy_load_xt_style');
 
-		wp_enqueue_style( 'jquery-lazyloadxt-css', apply_filters( 'a3_lazy_load_effect_css', A3_LAZY_LOAD_CSS_URL.'/jquery.lazyloadxt.'.$effect.'.css' ) );
+		wp_register_style( 'jquery-lazyloadxt-fadein-css', apply_filters( 'a3_lazy_load_effect_css', A3_LAZY_LOAD_CSS_URL.'/jquery.lazyloadxt.fadein.css' ), self::version );
+		wp_register_style( 'jquery-lazyloadxt-spinner-css', apply_filters( 'a3_lazy_load_effect_css', A3_LAZY_LOAD_CSS_URL.'/jquery.lazyloadxt.spinner.css' ), self::version );
+
+		wp_enqueue_style( 'jquery-lazyloadxt-'.$effect.'-css' );
 
 		do_action('after_a3_lazy_load_xt_style');
 
@@ -136,9 +143,14 @@ class A3_Lazy_Load
 		}
 
 		do_action('before_a3_lazy_load_xt_script');
+
 		wp_deregister_script( 'jquery-lazyloadxt' );
-		wp_enqueue_script( 'jquery-lazyloadxt', apply_filters( 'a3_lazy_load_main_script', A3_LAZY_LOAD_JS_URL.'/jquery.lazyloadxt'.$suffix.'.js' ), array( 'jquery' ), self::version, $in_footer );
-		wp_enqueue_script( 'jquery-lazyloadxt-extend', apply_filters( 'a3_lazy_load_extend_script', A3_LAZY_LOAD_JS_URL.'/jquery.lazyloadxt.extend.js' ), array( 'jquery' ), self::version, $in_footer );
+		wp_register_script( 'jquery-lazyloadxt', apply_filters( 'a3_lazy_load_main_script', A3_LAZY_LOAD_JS_URL.'/jquery.lazyloadxt'.$suffix.'.js' ), array( 'jquery' ), self::version, $in_footer );
+		wp_register_script( 'jquery-lazyloadxt-srcset', apply_filters( 'a3_lazy_load_main_script', A3_LAZY_LOAD_JS_URL.'/jquery.lazyloadxt.srcset'.$suffix.'.js' ), array( 'jquery', 'jquery-lazyloadxt' ), self::version, $in_footer );
+		wp_register_script( 'jquery-lazyloadxt-extend', apply_filters( 'a3_lazy_load_extend_script', A3_LAZY_LOAD_JS_URL.'/jquery.lazyloadxt.extend.js' ), array( 'jquery', 'jquery-lazyloadxt', 'jquery-lazyloadxt-srcset' ), self::version, $in_footer );
+
+		wp_enqueue_script( 'jquery-lazyloadxt-extend' );
+
 		do_action('after_a3_lazy_load_xt_script');
 	}
 
@@ -257,7 +269,6 @@ class A3_Lazy_Load
 
 	static function filter_content_images( $content ) {
 		$A3_Lazy_Load = A3_Lazy_Load::_instance();
-		add_filter( 'wp_get_attachment_image_attributes', array( $A3_Lazy_Load, 'get_attachment_image_attributes' ), 200 );
 
 		return $A3_Lazy_Load->filter_images( $content );
 	}
@@ -265,10 +276,23 @@ class A3_Lazy_Load
 	static function get_attachment_image_attributes( $attr ) {
 		$A3_Lazy_Load = A3_Lazy_Load::_instance();
 
-		$attr['data-src'] = $attr['src'];
-		$attr['src'] = $A3_Lazy_Load->_placeholder_url;
-		$attr['class'] = 'lazy-hidden '. $attr['class'];
-		$attr['data-lazy-type'] = 'image';
+		if ( is_array( $A3_Lazy_Load->_skip_images_classes ) ) {
+			$skip_images_preg_quoted = array_map( 'preg_quote', $A3_Lazy_Load->_skip_images_classes );
+			$skip_images_regex = sprintf( '/class=".*(%s).*"/s', implode( '|', $skip_images_preg_quoted ) );
+		}
+
+		if ( ! ( is_array( $A3_Lazy_Load->_skip_images_classes ) && preg_match( $skip_images_regex, 'class="'.$attr['class'].'"' ) ) && ! preg_match( "/src=.*lazy_placeholder.gif['\"]/s", 'src="'.$attr['src'].'"' ) ) {
+
+			$attr['data-src'] = $attr['src'];
+			$attr['src'] = $A3_Lazy_Load->_placeholder_url;
+			$attr['class'] = 'lazy-hidden '. $attr['class'];
+			$attr['data-lazy-type'] = 'image';
+			if ( isset( $attr['srcset'] ) ) {
+				$attr['data-srcset'] = $attr['srcset'];
+				$attr['srcset'] = '';
+				unset( $attr['srcset'] );
+			}
+		}
 
 		return $attr;
 	}
@@ -296,11 +320,12 @@ class A3_Lazy_Load
 		foreach ( $matches[0] as $imgHTML ) {
 
 			// don't to the replacement if a skip class is provided and the image has the class, or if the image is a data-uri
-			if ( ! ( is_array( $this->_skip_images_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/src=['\"]data:image/is", $imgHTML ) ) {
+			if ( ! ( is_array( $this->_skip_images_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/src=['\"]data:image/is", $imgHTML ) && ! preg_match( "/src=.*lazy_placeholder.gif['\"]/s", $imgHTML ) ) {
 				$i++;
 				// replace the src and add the data-src attribute
 				$replaceHTML = '';
 				$replaceHTML = preg_replace( '/<img(.*?)src=/is', '<img$1src="' . $this->_placeholder_url . '" data-lazy-type="image" data-src=', $imgHTML );
+				$replaceHTML = preg_replace( '/<img(.*?)srcset=/is', '<img$1srcset="" data-srcset=', $replaceHTML );
 
 				// add the lazy class to the img element
 				if ( preg_match( '/class=["\']/i', $replaceHTML ) ) {
@@ -327,7 +352,15 @@ class A3_Lazy_Load
 		return $content;
 	}
 
+	function get_color( $type = 'background' ) {
+		$return = '';
+		if ( 'off' != $value ) {
 
+		}
+
+		return $return;
+	}
+ 
 	static function filter_videos( $content, $include_noscript = null ) {
 		if ( is_admin() ) {
 			return $content;
@@ -380,11 +413,11 @@ class A3_Lazy_Load
 			}
 
 			// don't to the replacement if a skip class is provided and the image has the class, or if the image is a data-uri
-			if ( ! ( is_array( $this->_skip_videos_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/data-src=['\"]/is", $imgHTML ) ) {
+			if ( ! ( is_array( $this->_skip_videos_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/ data-src=['\"]/is", $imgHTML ) ) {
 				$i++;
 				// replace the src and add the data-src attribute
 				$replaceHTML = '';
-				$replaceHTML = preg_replace( '/iframe(.*?)src=/is', 'iframe$1src="' . $this->_placeholder_url . '" data-lazy-type="iframe" data-src=', $imgHTML );
+				$replaceHTML = preg_replace( '/iframe(.*?)src=/is', 'iframe$1src="' . $this->iframe_placeholder_url . '" data-lazy-type="iframe" data-src=', $imgHTML );
 
 				// add the lazy class to the img element
 				if ( preg_match( '/class=["\']/i', $replaceHTML ) ) {
@@ -423,7 +456,7 @@ class A3_Lazy_Load
 		foreach ( $matches[0] as $imgHTML ) {
 
 			// don't to the replacement if a skip class is provided and the image has the class, or if the image is a data-uri
-			if ( ! ( is_array( $this->_skip_videos_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/data-src=['\"]/is", $imgHTML ) ) {
+			if ( ! ( is_array( $this->_skip_videos_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/ data-src=['\"]/is", $imgHTML ) ) {
 				$i++;
 				// replace the src and add the data-src attribute
 
@@ -471,7 +504,7 @@ class A3_Lazy_Load
 		foreach ( $matches[0] as $imgHTML ) {
 
 			// don't to the replacement if a skip class is provided and the image has the class, or if the image is a data-uri
-			if ( ! ( is_array( $this->_skip_videos_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/data-src=['\"]/is", $imgHTML ) ) {
+			if ( ! ( is_array( $this->_skip_videos_classes ) && preg_match( $skip_images_regex, $imgHTML ) ) && ! preg_match( "/ data-src=['\"]/is", $imgHTML ) ) {
 				$i++;
 				// replace the src and add the data-src attribute
 				$replaceHTML = '';
@@ -503,5 +536,25 @@ class A3_Lazy_Load
 	}
 }
 
-add_action( 'wp', create_function('', 'if ( ! is_feed() ) { A3_Lazy_Load::_instance(); }'), 10, 0 );
+add_action( 'wp', 'a3_lazy_load_instance', 10, 0 );
+function a3_lazy_load_instance() {
+	$allow_instance = true;
+
+	if ( is_feed() ) {
+		$allow_instance = false;
+	}
+
+	if ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) {
+		$allow_instance = false;
+	}
+
+	// Compatibility with Better AMP plugin
+	if ( function_exists( 'is_better_amp' ) && is_better_amp() ) {
+		$allow_instance = false;
+	}
+
+	if ( $allow_instance ) {
+		A3_Lazy_Load::_instance();
+	}
+}
 ?>

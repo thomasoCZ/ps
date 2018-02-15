@@ -1,8 +1,7 @@
 <?php
-update_option('a3rev_lazy_load_plugin', 'a3_lazy_load');
 
 function a3_lazy_load_activated(){
-	update_option('a3_lazy_load_version', '1.4.`');
+	update_option('a3_lazy_load_version', A3_LAZY_VERSION );
 
 	// Set Settings Default from Admin Init
 	global $a3_lazy_load_admin_init;
@@ -21,11 +20,9 @@ function a3_lazy_load_init() {
 
 	if ( get_option( 'a3_lazy_load_just_installed' ) ) {
 		delete_option( 'a3_lazy_load_just_installed' );
-		wp_redirect( admin_url( 'options-general.php?page=a3-lazy-load', 'relative' ) );
-		exit;
 	}
 
-	load_plugin_textdomain( 'a3_lazy_load', false, A3_LAZY_LOAD_FOLDER.'/languages' );
+	a3_lazy_load_plugin_textdomain();
 
 	a3_lazy_load_upgrade_plugin();
 }
@@ -59,6 +56,12 @@ function a3_lazy_load_upgrade_plugin() {
     	include( A3_LAZY_LOAD_DIR. '/includes/updates/a3-lazy-load-update-1.1.0.php' );
     }
 
-    update_option('a3_lazy_load_version', '1.4.1');
+    // Upgrade to 1.7.0
+	if ( version_compare(get_option('a3_lazy_load_version'), '1.7.0') === -1 ) {
+		update_option('a3_lazy_load_version', '1.7.0');
+		update_option('a3_lazy_load_style_version', time() );
+	}
+
+    update_option('a3_lazy_load_version', A3_LAZY_VERSION );
 }
 ?>

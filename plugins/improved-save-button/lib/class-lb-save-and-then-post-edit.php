@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2015 Label Blanc (http://www.labelblanc.ca/)
+ * Copyright 2017 Label Blanc (http://www.labelblanc.ca/)
  *
  * This file is part of the "Improved Save Button"
  * Wordpress plugin.
@@ -55,7 +55,8 @@ class LB_Save_And_Then_Post_Edit {
 		}
 
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		
+	
+		// Adds post-edit.js	
 		wp_enqueue_script(
 			'lb-save-and-then-post-edit',
 			LB_Save_And_Then_Utils::plugins_url( "js/post-edit{$min}.js" ),
@@ -78,12 +79,15 @@ class LB_Save_And_Then_Post_Edit {
 			);
 		}
 
+		// Adds post-edit.css
 		wp_enqueue_style(
 			'lb-save-and-then-post-edit',
 			LB_Save_And_Then_Utils::plugins_url( 'css/post-edit.css' ),
 			array(),
 			'1.0'
 		);
+
+		// Adds rtl for post-edit.css
 		if( function_exists('wp_style_add_data') ) {
 			wp_style_add_data( 'lb-save-and-then-post-edit', 'rtl', 'replace' );
 		}
@@ -103,8 +107,9 @@ class LB_Save_And_Then_Post_Edit {
 
 		$options = LB_Save_And_Then_Settings::get_options();
 		$enabled_actions = LB_Save_And_Then_Settings::get_enabled_actions();
+		$current_post = get_post();
 
-		// If the user didn't select any action, we quit here
+		// If the user didn't enable any action, we quit here
 		if( ! count( $enabled_actions ) )
 			return;
 
@@ -122,46 +127,29 @@ class LB_Save_And_Then_Post_Edit {
 
 		// We add to $js_object all the actions and some data
 		// about them.
-		foreach ( $enabled_actions as $action_key => $action_data ) {
-			$action_info = array(
-				'id' => $action_key,
-				'buttonLabelPattern' => $action_data['button_label_pattern'],
-				'enabled' => true // may be set to false below
+		foreach ( $enabled_actions as $action ) {
+			$new_js_action = array(
+				'id' => $action->get_id(),
+				'buttonLabelPattern' => $action->get_button_label_pattern( $current_post ),
+				'enabled' => $action->is_enabled( $current_post ),
 			);
 
-			// If action is 'next', we check if we have a next post (same
-			// logic with 'previous'). If we don't have one, we disable
-			// the action and set a special title.
-			if( 'next' == $action_key || 'previous' == $action_key ) {
-				$adjacent_post = LB_Save_And_Then_Utils::get_adjacent_post( get_post(), $action_key );
-				
-				if( ! $adjacent_post ) {
-					$action_info['enabled'] = false;
-
-					if( 'next' == $action_key ) {
-						$action_info['title'] = __('You are at the last post', 'lb-save-and-then');
-					}
-
-					if( 'previous' == $action_key ) {
-						$action_info['title'] = __('You are at the first post', 'lb-save-and-then');
-					}
-				}
+			// If the action has a title attribute to add
+			if( $button_title = $action->get_button_title( $current_post ) ) {
+				$new_js_action['title'] = $button_title;
 			}
 
-			$js_object['actions'][] = $action_info;
+			$js_object['actions'][] = $new_js_action;
 		}
 
 		// Output of the JavaScript object
 		echo '<script type="text/javascript">';
 		echo 'window.LabelBlanc = window.LabelBlanc || {};';
 		echo 'window.LabelBlanc.SaveAndThen = window.LabelBlanc.SaveAndThen || {};';
-		echo 'window.LabelBlanc.SaveAndThen.ACTION_LAST = "' . LB_Save_And_Then::ACTION_LAST . '";';
+		echo 'window.LabelBlanc.SaveAndThen.ACTION_LAST_ID = "' . LB_Save_And_Then_Actions::ACTION_LAST . '";';
 		echo 'window.LabelBlanc.SaveAndThen.HTTP_PARAM_ACTION = "' . self::HTTP_PARAM_ACTION . '";';
 		echo 'window.LabelBlanc.SaveAndThen.config = ' . json_encode( $js_object );
 		echo '</script>';
-
-		// Output of the referer in a hidden field
-		echo '<input type="hidden" name="' . LB_Save_And_Then_Redirect::HTTP_PARAM_REFERER . '" value="' . wp_get_referer() . '" />';
 	}
 } // end class
 

@@ -1,10 +1,10 @@
 === Scripts To Footer ===
 Contributors: joshuadnelson
-Tags: javascript, footer, speed, head, performance, jquery, seo
-Donate link: http://jdn.im/donate
+Tags: javascript, footer, speed, head, performance
+Donate link: https://joshuadnelson.com/donate
 Requires at least: 3.1.0
-Tested up to: 4.3.0
-Stable tag: 0.6.1
+Tested up to: 4.9
+Stable tag: 0.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,23 +109,25 @@ Please feel free to open a [Github Issue](https://github.com/joshuadavidnelson/s
 
 == Changelog ==
 
+= 0.6.2 =
+Added support for disabling plugin on 404 pages, thanks to Alex (@piscis on GitHub)
+
 = 0.6.1 =
-* Fix bug with custom taxonomy archive include filter
-* Clean up all taxonomy archive conditional statements and corresponding error logging
+Updates custom taxonomy check for custom taxonomy archives and some error logging functions.
 
 = 0.6.0 =
 Large number of improvements:
-* Add settings page with global disable options for home page, search pages, post type archives, taxonomy archives, and other archives.
-* Update uninstall.php to remove things correctly.
-* Add FAQ to readme.txt and readme.md.
-* Add a changelog as a separate file.
-* Change the custom post type filter. Refer to updated [FAQ](https://github.com/joshuadavidnelson/scripts-to-footer/#faq) and [documentation](https://github.com/joshuadavidnelson/scripts-to-footer/wiki).
-* Add support for custom taxonomy archives.
-* Change the exclude filter, to be more relevant to the new options. Older filter is depreciated, but still supported (for now).
-* Update the post meta for disabling the plugin on specific posts/pages.
-* Add Github Updater support.
-* Removed CMB and built metaboxes the old fashion way.
-* Added debug logging to better track any potential errors moving forward.
+ - Add settings page with global disable options for home page, search pages, post type archives, taxonomy archives, and other archives.
+ - Update uninstall.php to remove things correctly.
+ - Add FAQ to readme.txt and readme.md.
+ - Add a changelog as a separate file.
+ - Change the custom post type filter. Refer to updated [FAQ](https://github.com/joshuadavidnelson/scripts-to-footer/#faq) and [documentation](https://github.com/joshuadavidnelson/scripts-to-footer/wiki).
+ - Add support for custom taxonomy archives.
+ - Change the exclude filter, to be more relevant to the new options. Older filter is depreciated, but still supported (for now).
+ - Update the post meta for disabling the plugin on specific posts/pages.
+ - Add Github Updater support.
+ - Removed CMB and built metaboxes the old fashion way.
+ - Added debug logging to better track any potential errors moving forward.
 
 = 0.5 =
 Reverted metabox version to previous - invalid error was sneaking through.
@@ -144,8 +146,11 @@ Initial release
 
 == Upgrade Notice ==
 
+= 0.6.2 =
+Added support for disabling plugin on 404 pages, thanks to Alex (@piscis on GitHub)
+
 = 0.6.1 =
-Updates custom taxonomy check for custom taxonomy archives and some error logging functions. 
+Updates custom taxonomy check for custom taxonomy archives and some error logging functions.
 
 = 0.6 =
 Large improvements, including: a settings page to resolve issues on archives and blog roll pages, setting to keep jQuery in the header, and updated filters. Refer to the documentation if you are using a filter currently, as they have changed, prior to updating.

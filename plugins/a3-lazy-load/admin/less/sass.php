@@ -5,31 +5,33 @@ if (!defined('ABSPATH'))
 
 class A3_Lazy_Load_Less
 {
-	public $plugin_name = 'a3_lazy_load';
-	public $css_file_name = 'a3_lazy_load';
-	public $plugin_folder = A3_LAZY_LOAD_FOLDER;
-	public $plugin_dir = A3_LAZY_LOAD_DIR;
-
+    public $plugin_name   = A3_LAZY_LOAD_KEY;
+    public $css_file_name = 'a3_lazy_load';
+    public $plugin_folder = A3_LAZY_LOAD_FOLDER;
+    public $plugin_dir    = A3_LAZY_LOAD_DIR;
+    
     /*-----------------------------------------------------------------------------------*/
     /* Constructor */
     /*-----------------------------------------------------------------------------------*/
     public function __construct()
     {
 		add_action( $this->plugin_name.'_after_settings_save_reset', array ($this, 'plugin_build_sass') );
-		add_action( 'wp_head', array ($this, 'apply_style_css_fontend') , 9 );
+		add_action( 'wp_enqueue_scripts', array ($this, 'apply_style_css_fontend') , 12 );
     }
 
 	public function apply_style_css_fontend()
 	{
 		$_upload_dir = wp_upload_dir();
-		if ( file_exists( $_upload_dir['basedir'] . '/sass/' . $this->css_file_name . '.min.css' ) )
-			echo '<link media="screen" type="text/css" href="' . str_replace(array('http:','https:'), '', $_upload_dir['baseurl'] ) . '/sass/' . $this->css_file_name . '.min.css" rel="stylesheet" />' . "\n";
+		if ( file_exists( $_upload_dir['basedir'] . '/sass/' . $this->css_file_name . '.min.css' ) ) {
+			wp_enqueue_style( 'a3' . $this->css_file_name, str_replace( array('http:','https:'), '', $_upload_dir['baseurl'] ) . '/sass/' . $this->css_file_name . '.min.css', array(), $this->get_css_file_version() );
+        }
 	}
 
 	public function plugin_build_sass()
     {
 		$sass = $this->sass_content_data();
 		$this->plugin_compile_less_mincss( $sass );
+        $this->set_css_file_version();
 	}
     public function custom_filesystem_method( $method = '') {
         return 'direct';
@@ -147,6 +149,32 @@ class A3_Lazy_Load_Less
             $sass .= "\n" . $sass_ext;
 
         return $sass;
+    }
+
+    public function set_css_file_version( $css_file_name = '' ) {
+        if ( trim( $css_file_name ) == '' ) {
+            $css_file_name = $this->css_file_name;
+        }
+
+        if ( $css_file_name == '' ) {
+            return false;
+        }
+
+        update_option( $css_file_name . '_style_version', time() );
+    }
+
+    public function get_css_file_version( $css_file_name = '' ) {
+        if ( trim( $css_file_name ) == '' ) {
+            $css_file_name = $this->css_file_name;
+        }
+
+        if ( $css_file_name == '' ) {
+            return false;
+        }
+
+        $version_number = get_option( $css_file_name . '_style_version', time() );
+
+        return $version_number;
     }
 }
 global $a3_lazy_load_less;

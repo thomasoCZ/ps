@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Label Blanc (http://www.labelblanc.ca/)
+ * Copyright 2017 Label Blanc (http://www.labelblanc.ca/)
  *
  * This file is part of the "Improved Save Button"
  * Wordpress plugin.
@@ -69,10 +69,10 @@
 		$actionsOptions.each(function( i, elem ) {
 			var $action = $(elem),
 				action = $action.data('lbSatSettingsValue'),
-				$default = $defaultOptions.filter('[value=' + action + ']');
+				$default = $defaultOptions.filter('[value="' + action + '"]');
 
 			if( ! $action.prop('checked') && $default.prop('checked') ) {
-				$defaultOptions.filter('[value=_last]').prop('checked', true);
+				$defaultOptions.filter('[value="_last"]').prop('checked', true);
 			}
 
 			$default.prop('disabled', ! $action.prop('checked') );

@@ -1,60 +1,28 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * CPAC_Column_Post_Modified
- *
  * @since 2.0
  */
-class CPAC_Column_Post_Modified extends CPAC_Column {
+class AC_Column_Post_Modified extends AC_Column {
 
-	/**
-	 * @see CPAC_Column::init()
-	 * @since 2.2.1
-	 */
-	public function init() {
-
-		parent::init();
-
-		// Properties
-		$this->properties['type']	 	= 'column-modified';
-		$this->properties['label']	 	= __( 'Last modified', 'codepress-admin-columns' );
-
-		// Options
-		$this->options['date_format'] = '';
+	public function __construct() {
+		$this->set_type( 'column-modified' );
+		$this->set_label( __( 'Last Modified', 'codepress-admin-columns' ) );
 	}
 
-	/**
-	 * @see CPAC_Column::get_value()
-	 * @since 2.0
-	 */
-	public function get_value( $post_id ) {
-
-		$modified = $this->get_raw_value( $post_id );
-
-		if ( ! $this->options->date_format ) {
-			return $this->get_date( $modified ) . ' ' . $this->get_time( $modified );
-		}
-
-		return date( $this->options->date_format, strtotime( $modified ) );
-	}
-
-	/**
-	 * @see CPAC_Column::get_raw_value()
-	 * @since 2.0.3
-	 */
 	public function get_raw_value( $post_id ) {
-
-		$p = get_post( $post_id );
-
-		return $p->post_modified;
+		return get_post_field( 'post_modified', $post_id );
 	}
 
-	/**
-	 * @see CPAC_Column::display_settings()
-	 * @since 2.2.7
-	 */
-	function display_settings() {
+	public function register_settings() {
+		$date = new AC_Settings_Column_Date( $this );
+		$date->set_default( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) );
 
-		$this->display_field_date_format();
+		$this->add_setting( $date );
 	}
 
 }

@@ -1,10 +1,10 @@
 /**
- * Copyright 2014 Label Blanc (http://www.labelblanc.ca/)
+ * Copyright 2017 Label Blanc (http://www.labelblanc.ca/)
  *
- * This file is part of the "Save then create new, show list, or more..."
+ * This file is part of the "Improved Save Button"
  * Wordpress plugin.
  *
- * The "Save then create new, show list, or more..." Wordpress plugin
+ * The "Improved Save Button" Wordpress plugin
  * is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -89,6 +89,11 @@ $lb-sat-media-query-sm: "screen and (max-width: 782px)";
 		&.button-large {
 			padding-right: 8px;
 		}
+	}
+
+	// Icon alignment
+	.dashicons {
+		vertical-align: text-bottom;
 	}
 }
 
